@@ -1,12 +1,71 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Signature generator</title>
+        <title>Signature builder</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     </head>
     <body>
-        <div>
+        <div id="app">
+            <div class="container">
+                <h1>Mail signature builder</h1>
+                <h2>Information</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input v-model="name" type="text" name="name" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Surname</label>
+                        <input v-model="surname" type="text" name="surname" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Position</label>
+                        <input v-model="position" type="text" name="position" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input v-model="phone" type="tel" name="phone" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input v-model="email" type="email" name="email" class="form-control"/>
+                    </div>
+                </form>
+                <h2>Result</h2>
+                <table id="signature">
+                    <tbody>
+                        <tr>
+                            <td style="padding-right:15px">
+                                <img src="./img/portrait.jpg" width="100px" height="100px" alt="Profile picture" style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px;"/>
+                            </td>
+                            <td style="font-size:13px;line-height:14px;font-family:Helvetica,sans-serif">
+                                <p style="margin: 8px 0;">
+                                    <span style="font-weight:bold">
+                                        <span style="text-transform:capitalize">{{ name }}</span> 
+                                        <span style="text-transform:uppercase">{{ surname }}</span>
+                                        &nbsp;•&nbsp;{{ position }}
+                                        <br/>
+                                    </span>
+                                    <span style="color:#6d7a80">
+                                        {{ phone }}
+                                        &nbsp;•&nbsp;
+                                        <a target="_blank" v-bind:href="mailToEmail" style="color:#6d7a80;text-decoration: none;">{{ email }}</a>
+                                    </span>
+                                </p>
+                                <p>
+                                    
+                                </p>
+                                <p style="margin: 8px 0;">
+                                    Socials:
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>
