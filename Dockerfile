@@ -14,5 +14,11 @@ RUN npm install -g pm2
 # Bundle app source
 COPY . /usr/src/signature
 
+# Environment variables
+ENV PORT 3000
+
+# Expose ports
 EXPOSE 3000
+
+# Run command
 CMD [ "pm2-docker", "start", "npm", "--", "start" ]
