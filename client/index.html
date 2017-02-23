@@ -117,7 +117,7 @@
                                 <tbody>
                                     <tr>
                                         <td v-if="signature.enablePhoto" style="padding-right:15px">
-                                            <img src="./img/portrait.jpg" width="100px" height="100px" v-bind:alt="portraitTitle" style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px;"/>
+                                            <img v-bind:src="user.photoUrl" width="100px" height="100px" v-bind:alt="portraitTitle" style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px;"/>
                                         </td>
                                         <td style="font-size:13px;line-height:14px;font-family:Helvetica,sans-serif">
                                             <p style="margin: 8px 0;">
@@ -145,7 +145,7 @@
                             <div v-if="signature.enablePhoto" class="form-group">
                                 <label for="photo">Photo URL</label>
                                 <div class="input-group">
-                                    <input type="text" name="photo" class="form-control"/>
+                                    <input v-model="user.photoUrl" type="text" name="photo" class="form-control"/>
                                     <span class="input-group-btn">
                                         <button class="btn btn-secondary" type="button" v-on:click="togglePhoto">Remove</button>
                                     </span>

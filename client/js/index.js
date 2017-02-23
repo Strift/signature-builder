@@ -19,7 +19,8 @@ var app = new Vue({
 			phone: '00 00 00 00 00',
 			email: 'john.doe@mail.com',
 			linkedinUrl: 'https://fr.linkedin.com/in/laurentcazanove',
-			twitterUrl: 'https://twitter.com/lau_cazanove'
+			twitterUrl: 'https://twitter.com/lau_cazanove',
+			photoUrl: 'http://signature.laurentcazanove.com/img/portrait.jpg'
 		},
 		informationPanel: {
 			visible: true,
@@ -62,6 +63,9 @@ var app = new Vue({
 		'user.twitterUrl': function(newValue) {
 			this.copiedSignature = false;
 		},
+		'user.photoUrl': function(newValue) {
+			this.copiedSignature = false;
+		},
 		'signature.surnameToUpperCase': function(newValue) {
 			if (newValue) {
 				this.user.surname = this.user.surname.toUpperCase();
@@ -71,11 +75,11 @@ var app = new Vue({
 	
 	computed: {
 		mailToEmail: function() {
-			return 'mailto:' + this.email;
+			return 'mailto:' + this.user.email;
 		},
 
 		portraitTitle: function() {
-			return 'Picture of ' + this.name + " " + this.surname;
+			return 'Picture of ' + this.user.name + " " + this.user.surname;
 		},
 	},
 
