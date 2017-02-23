@@ -106,7 +106,7 @@
                             <button v-if="copiedSignature" class="btn alert-success" style="padding: 6px 12px;font-size: 14px;">
                                 Copied to clipboard!
                             </button>
-                            <button v-else v-on:click="click" id="copy-button" class="btn btn-default" data-clipboard-target="#signature">
+                            <button v-else id="copy-button" class="btn btn-default" data-clipboard-target="#signature">
                                 Copy to clipboard <i class="fa fa-clipboard" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -116,7 +116,7 @@
                             <table id="signature">
                                 <tbody>
                                     <tr>
-                                        <td style="padding-right:15px">
+                                        <td v-if="signature.enablePhoto" style="padding-right:15px">
                                             <img src="./img/portrait.jpg" width="100px" height="100px" v-bind:alt="portraitTitle" style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px;"/>
                                         </td>
                                         <td style="font-size:13px;line-height:14px;font-family:Helvetica,sans-serif">
@@ -140,6 +140,20 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="panel-footer">
+                            <div v-if="signature.enablePhoto" class="form-group">
+                                <label for="photo">Photo URL</label>
+                                <div class="input-group">
+                                    <input type="text" name="photo" class="form-control"/>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-secondary" type="button" v-on:click="togglePhoto">Remove</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div v-else class="form-group">
+                                <button class="btn btn-sm btn-primary" type="button" v-on:click="togglePhoto"><i class="fa fa-plus" aria-hidden="true"></i> Photo</button>
+                            </div>
                         </div>
                     </div>
                 </div>

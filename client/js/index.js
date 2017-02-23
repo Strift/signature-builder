@@ -31,7 +31,8 @@ var app = new Vue({
 			enablePosition: true,
 			enablePhone: false,
 			enableLinkedin: false,
-			enableTwitter: false
+			enableTwitter: false,
+			enablePhoto: true
 		}
 	},
 
@@ -104,8 +105,8 @@ var app = new Vue({
 			this.signature.enablePhone = !this.signature.enablePhone;
 		},
 
-		click: function(event) {
-			console.log(event);
+		togglePhoto: function() {
+			this.signature.enablePhoto = !this.signature.enablePhoto;
 		}
 	}
 });
