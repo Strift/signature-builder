@@ -15,7 +15,7 @@
                 <div class="col-md-6">
                     <h2>
                         <span>Information</span>
-                        <div class="hidden-md hidden-lg pull-right">
+                        <div v-bind:class="{'hidden-md hidden-lg': informationPanel.visible}" class="pull-right">
                             <button v-on:click="toggleInformationPanel" class="btn btn-link">
                                 {{ informationPanel.toggleButtonText }}
                             </button>
@@ -24,33 +24,76 @@
                     <div v-if="informationPanel.visible" class="panel panel-default">
                         <div class="panel-body">
                             <form>
+                                <!-- Name -->
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input v-model="name" type="text" name="name" class="form-control"/>
+                                    <input v-model="user.name" type="text" name="name" class="form-control"/>
                                 </div>
+                                <!-- Surname -->
                                 <div class="form-group">
                                     <label for="surname">Surname</label>
-                                    <input v-model="surname" type="text" name="surname" class="form-control"/>
+                                    <div class="pull-right">
+                                        <label class="checkbox-inline"><input type="checkbox" v-model="signature.surnameToUpperCase">Uppercase</label>
+                                    </div>
+                                    <input v-model="user.surname" type="text" name="surname" class="form-control"/>
                                 </div>
-                                <div class="form-group">
-                                    <label for="position">Position</label>
-                                    <input v-model="position" type="text" name="position" class="form-control"/>
+                                <!-- Position -->
+                                <div v-if="signature.enablePosition" class="form-group">
+                                    <label for="position">Position</label>  
+                                    <div class="input-group">
+                                        <input v-model="user.position" type="text" name="position" class="form-control"/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-secondary" type="button" v-on:click="togglePosition">Remove</button>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone</label>
-                                    <input v-model="phone" type="tel" name="phone" class="form-control"/>
-                                </div>
+                                <!-- E-mail -->
                                 <div class="form-group">
                                     <label for="email">E-mail</label>
-                                    <input v-model="email" type="email" name="email" class="form-control"/>
+                                    <input v-model="user.email" type="email" name="email" class="form-control"/>
                                 </div>
-                                <div class="form-group">
+                                <!-- Add position -->
+                                <div v-if="!signature.enablePosition" class="form-group">
+                                    <button class="btn btn-sm btn-primary" type="button" v-on:click="togglePosition"><i class="fa fa-plus" aria-hidden="true"></i> Position</button>
+                                </div>
+                                <!-- Phone -->
+                                <div v-if="signature.enablePhone" class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <div class="input-group">
+                                        <input v-model="user.phone" type="tel" name="phone" class="form-control"/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-secondary" type="button" v-on:click="togglePhone">Remove</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div v-else class="form-group">
+                                    <button class="btn btn-sm btn-primary" type="button" v-on:click="togglePhone"><i class="fa fa-plus" aria-hidden="true"></i> Phone</button>
+                                </div>
+                                <!-- LinkedIn -->
+                                <div v-if="signature.enableLinkedin" class="form-group">
                                     <label for="linkedin">LinkedIn URL</label>
-                                    <input v-model="linkedinUrl" type="text" name="linkedin" class="form-control"/>
+                                    <div class="input-group">
+                                        <input v-model="user.linkedinUrl" type="text" name="linkedin" class="form-control"/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-secondary" type="button" v-on:click="toggleLinkedin">Remove</button>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
+                                <div v-else class="form-group">
+                                    <button class="btn btn-sm btn-primary" type="button" v-on:click="toggleLinkedin"><i class="fa fa-plus" aria-hidden="true"></i> LinkedIn</button>
+                                </div>
+                                <!-- Twitter -->
+                                <div v-if="signature.enableTwitter" class="form-group">
                                     <label for="twitter">Twitter URL</label>
-                                    <input v-model="twitterUrl" type="text" name="twitter" class="form-control"/>
+                                    <div class="input-group">
+                                        <input v-model="user.twitterUrl" type="text" name="twitter" class="form-control"/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-secondary" type="button" v-on:click="toggleTwitter">Remove</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div v-else class="form-group">
+                                    <button class="btn btn-sm btn-primary" type="button" v-on:click="toggleTwitter"><i class="fa fa-plus" aria-hidden="true"></i> Twitter</button>
                                 </div>
                             </form>
                         </div>
@@ -60,7 +103,10 @@
                     <h2>
                         <span>Result</span>
                         <div class="pull-right">
-                            <button id="copy-button" class="btn btn-default" data-clipboard-target="#signature">
+                            <button v-if="copiedSignature" class="btn alert-success" style="padding: 6px 12px;font-size: 14px;">
+                                Copied to clipboard!
+                            </button>
+                            <button v-else v-on:click="click" id="copy-button" class="btn btn-default" data-clipboard-target="#signature">
                                 Copy to clipboard <i class="fa fa-clipboard" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -76,21 +122,19 @@
                                         <td style="font-size:13px;line-height:14px;font-family:Helvetica,sans-serif">
                                             <p style="margin: 8px 0;">
                                                 <span style="font-weight:bold; font-size: 14px">
-                                                    <span style="text-transform:capitalize">{{ name }}</span> 
-                                                    <span style="text-transform:uppercase">{{ surname }}</span>,&nbsp;{{ position }}
+                                                    <span>{{ user.name }}</span> {{ user.surname }}<span v-if="signature.enablePosition">,&nbsp;{{ user.position }}</span>
                                                     <br/>
                                                 </span>
                                                 <span style="color:#6d7a80">
-                                                    {{ phone }}
-                                                    &nbsp;•&nbsp;
-                                                    <a target="_blank" v-bind:href="mailToEmail" style="color:#6d7a80;text-decoration: none;">{{ email }}</a>
+                                                    <span v-if="signature.enablePhone">{{ user.phone }}&nbsp;•&nbsp;</span>
+                                                    <a target="_blank" v-bind:href="mailToEmail" style="color:#6d7a80;text-decoration: none;">{{ user.email }}</a>
                                                 </span>
                                             </p>
-                                            <p style="margin: 8px 0; font-size: 11px">
-                                                <img src="./img/linkedin-logo.png" alt="LinkedIn logo" height="16" style="margin-right: 2px"/><a target="_blank" v-bind:href="linkedinUrl">{{ linkedinUrl }}</a>
+                                            <p v-if="signature.enableLinkedin" style="margin: 8px 0; font-size: 11px">
+                                                <img src="./img/linkedin-logo.png" alt="LinkedIn logo" height="16" style="margin-right: 2px"/><a target="_blank" v-bind:href="user.linkedinUrl">{{ user.linkedinUrl }}</a>
                                             </p>
-                                            <p style="margin: 8px 0; font-size: 11px">
-                                                <img src="./img/twitter-logo.png" alt="Twitter logo" height="16" style="margin-right: 2px"/><a target="_blank" v-bind:href="twitterUrl">{{ twitterUrl }}</a>
+                                            <p v-if="signature.enableTwitter" style="margin: 8px 0; font-size: 11px">
+                                                <img src="./img/twitter-logo.png" alt="Twitter logo" height="16" style="margin-right: 2px"/><a target="_blank" v-bind:href="user.twitterUrl">{{ user.twitterUrl }}</a>
                                             </p>
                                         </td>
                                     </tr>
