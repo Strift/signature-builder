@@ -1,4 +1,4 @@
-# chat-example
+# signature-builder
 
 ## Project setup
 ```
