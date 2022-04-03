@@ -360,7 +360,7 @@ export default {
       email: 'john.doe@mail.com',
       linkedinUrl: 'https://fr.linkedin.com/in/laurentcazanove',
       twitterUrl: 'https://twitter.com/lau_cazanove',
-      photoUrl: 'http://signature.laurentcazanove.com/img/portrait.jpg'
+      photoUrl: '/img/me.jpg'
     },
     informationPanel: {
       visible: true,
